@@ -43,7 +43,7 @@ class RpcNameService:
             message = None
             if len(args) != 6:
                 print "Failure:malformed message body : \r\n[" + body + ']\r\n'
-            elif method_dict[args[0]] is not None:
+            elif args[0] in method_dict and method_dict[args[0]] is not None:
                 message = self.__create_message(args[0])
 
             if message is not None:

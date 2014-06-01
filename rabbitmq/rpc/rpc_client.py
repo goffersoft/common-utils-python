@@ -9,9 +9,12 @@ logging.basicConfig()
 
 
 class RpcClient:
-    def __init__(self, exchange, ns_exchange, conn_params):
+    def __init__(self, exchange, ns_exchange, conn_params, timeout=60):
         self.__exchange = exchange
         self.__ns_exchange = ns_exchange
+        self.__timedout = False
+        self.__timeout = 0
+        self.__timeout_id = None
         self.__connection = pika.BlockingConnection(
             pika.ConnectionParameters(*conn_params)
             )
@@ -31,6 +34,34 @@ class RpcClient:
             queue=self.__callback_queue,
             no_ack=True
             )
+        self.set_timeout(timeout)
+
+    def get_timeout(self):
+        return self.__timeout
+
+    def set_timeout(self, timeout):
+        if self.__timeout == timeout:
+            return timeout
+
+        prev_timeout = timeout
+        self.__timeout = timeout
+
+        if self.__timeout_id is None and timeout > 0:
+            self.__timeout_id = self.__connection.add_timeout(
+                self.__timeout, self. __on_timeout)
+        elif self.__timeout_id is not None and timeout > 0:
+            self.__connection.remove_timeout(self.__timeout_id)
+            self.__timeout_id = self.__connection.add_timeout(
+                self.__timeout, self.__on_timeout)
+        elif self.__timeout_id is not None and timeout == 0:
+            self.__connection.remove_timeout(self.__timeout_id)
+            self.__timeout_id = None
+
+        return prev_timeout
+
+    def __on_timeout(self):
+        self.__timedout = True
+        print "timedout waiting for a response "
 
     def __on_response(self, ch, method, props, body):
         print "[X] = %r" % self.__message
@@ -47,7 +78,8 @@ class RpcClient:
         return message
 
     def __find(self):
-        ns = RpcFind(self.__exchange, self.__ns_exchange, ('localhost', ))
+        ns = RpcFind(self.__exchange, self.__ns_exchange,
+                     ('localhost', ), self.__timeout)
         return ns(self.__method)
 
     def __call__(self, method, vartargs, method_route=None):
@@ -57,6 +89,11 @@ class RpcClient:
             self.__method_route = self.__find()
         else:
             self.__method_route = method_route
+
+        if self.__method_route is None:
+            print "RpcFind timeout : cannot find route to" + method
+            return None
+
         self.__message = self.__create_message(vartargs)
         self.__channel.queue_bind(
             exchange=self.__exchange,
@@ -69,7 +106,7 @@ class RpcClient:
             properties=self.__properties,
             body=self.__message)
 
-        while(self.__response is None):
+        while(self.__response is None and self.__timedout is not True):
             self.__connection.process_data_events()
 
         return self.__response
@@ -96,9 +133,20 @@ if __name__ == "__main__":
     list_of_args = sys.argv[2:]
 
     rpc = RpcClient('rpc_exchange', 'rpc_ns_exchange', ('localhost', ))
-    ns = RpcFind('rpc_exchange', 'rpc_ns_exchange', ('localhost', ))
+
+    rpc.set_timeout(15)
+
+    ns = RpcFind('rpc_exchange', 'rpc_ns_exchange', ('localhost', ), 15)
     result = ns(method)
-    result = rpc(method, list_of_args, result)
-    print "%r" % result
+    if result is None:
+        print 'Cannot Execute ' + method + '(Not registered)'
+    else:
+        result = rpc(method, list_of_args, result)
+        print "%r" % result
+
     result = rpc(method, list_of_args, None)
-    print "%r" % result
+
+    if result is None:
+        print 'Cannot Execute ' + method + '(Not registered)'
+    else:
+        print "%r" % result
