@@ -1,0 +1,12 @@
+MANIFEST.in
+README.md
+setup.py
+projtemplate/__init__.py
+projtemplate/hello.py
+projtemplate/uniqid.py
+projtemplate.egg-info/PKG-INFO
+projtemplate.egg-info/SOURCES.txt
+projtemplate.egg-info/dependency_links.txt
+projtemplate.egg-info/not-zip-safe
+projtemplate.egg-info/requires.txt
+projtemplate.egg-info/top_level.txt
