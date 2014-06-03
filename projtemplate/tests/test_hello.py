@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from projtemplate.com.goffersoft.myproj import hello
+from com.goffersoft.myproj import hello
 
 
 
