@@ -1,6 +1,8 @@
 from unittest import TestCase
 
-from projtemplate import hello
+from projtemplate.com.goffersoft.myproj import hello
+
+
 
 
 class TestHello(TestCase):

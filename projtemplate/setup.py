@@ -15,7 +15,11 @@ setup(
     author='goffer',
     author_email='goffersoft@gmail.com',
     license='MIT',
-    packages=['projtemplate'],
+    packages=[
+        'com',
+        'com.goffersoft',
+        'com.goffersoft.myproj',
+    ],
     install_requires=[
         'uuid',
     ],
