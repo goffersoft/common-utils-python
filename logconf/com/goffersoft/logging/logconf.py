@@ -23,7 +23,8 @@ def init_logging(
             cfg = json.load(f)
         logging.config.dictConfig(cfg)
     else:
-        print '**** Log Init Error : Cannot Find Json Log Cfg File : ' + default_path
+        print '**** Log Init Error : Cannot Find \
+              Json Log Cfg File : ' + default_path
         logging.basicConfig(level=default_level)
 
 if __name__ == "__main__":
