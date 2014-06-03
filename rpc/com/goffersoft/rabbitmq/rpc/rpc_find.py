@@ -4,10 +4,12 @@ import pika
 import logging
 import uuid
 
+
 class RpcFind:
     def __init__(self, rpc_exchange,
                  rpc_nameservice_exchange,
-                 conn_params, timeout=60):
+                 conn_params, timeout=60, logger=None):
+        self.__logger = logger or logging.getLogger(self.__class__.__name__)
         self.__rpc_exchange = rpc_exchange
         self.__rpc_nameservice_exchange = rpc_nameservice_exchange
         self.__timedout = False
@@ -64,7 +66,7 @@ class RpcFind:
 
     def __on_timeout(self):
         self.__timedout = True
-        print "timedout waiting for a response "
+        self.__logger.debug('timedout waiting for a response ')
 
     def __on_response(self, ch, method, props, body):
         if self.__correlation_id == props.correlation_id:
@@ -97,7 +99,7 @@ class RpcFind:
             self.__connection.process_data_events()
 
         if self.__response is not None:
-            print "%r" % self.__response
+            self.__logger.debug('%r', self.__response)
             args = self.__response.split('\r\n')
             return args[2]
         else:
@@ -106,20 +108,22 @@ class RpcFind:
 
 if __name__ == "__main__":
     import sys
-    from loginit import loginit
+    from com.goffersoft.logging import logconf
 
-    loginit.init_logging(default_path='./logconf_rpcfind.json')
+    logconf.init_logging(default_path='../../../../conf/logconf_rpcfind.json')
+
+    logger = logging.getLogger(__name__)
 
     usage_string = """
     Usage : %s <method>
         """
 
     def print_usage_and_exit(reason):
-        print(reason)
+        logger.error(reason)
         sys.exit(usage_string % sys.argv[0])
 
     if len(sys.argv) != 2:
-        print_usage_and_exit("error : Need 1 arg")
+        print_usage_and_exit('error : Need 1 arg')
 
     method = sys.argv[1]
 
@@ -130,6 +134,6 @@ if __name__ == "__main__":
     result = rpc(method)
 
     if result is not None:
-        print "result=%r" % result
+        logger.info('result=%r', result)
     else:
-        print "timedout waiting for a response "
+        logger.error('timedout waiting for a response ')

@@ -16,7 +16,8 @@ def fibo(x):
 
 
 class RpcService:
-    def __init__(self, exchange, conn_params):
+    def __init__(self, exchange, conn_params, logger=None):
+        self.__logger = logger or logging.getLogger(self.__class__.__name__)
         self.__exchange = exchange
         self.__connection = pika.BlockingConnection(
             pika.ConnectionParameters(*conn_params)
@@ -35,10 +36,16 @@ class RpcService:
                 routing_key=method_dict[k]
             )
 
+    def __create_message(self, status, result):
+        message = status + '\r\n\r\n'
+        message += str(result) + '\r\n'
+        return message
+
     def __on_request(self, ch, method, props, body):
+        publish_failure_message = True
         try:
             args = body.split("\r\n")
-            print "%r" % args
+            self.__logger.debug('%r', args)
             arglist = []
             i = 0
             retval = True
@@ -62,7 +69,9 @@ class RpcService:
                            \r\n[" + body + ']\r\n'
             else:
                 result = fibo(*arglist)
-                message = "Success:\r\n"+str(result)+"\r\n\r\n"
+                message = self.__create_message('Success', result)
+                self.__logger.info('%r', message)
+            publish_failure_message = False
             self.__channel.basic_publish(
                 exchange=_exchange,
                 routing_key=method_dict[_method] + ".result",
@@ -72,10 +81,22 @@ class RpcService:
                 body=message
                 )
         except:
-            print "Unexpected error:", sys.exc_info()[0]
-            print '-'*60
-            traceback.print_exc(file=sys.stdout)
-            print '-'*60
+            self.__logger.exception('Unexpected error:')
+            if(publish_failure_message is True):
+                error = traceback.format_exc()
+                message = self.__create_message('Failure', error)
+                try:
+                    self.__channel.basic_publish(
+                        exchange=_exchange,
+                        routing_key=method_dict[_method] + ".result",
+                        properties=pika.BasicProperties(
+                            correlation_id=props.correlation_id
+                            ),
+                        body=message
+                        )
+                except:
+                    self.__logger.exception('Unexpected error sending \
+                                             exception back to client')
 
     def __call__(self):
         self.__channel.basic_consume(
@@ -92,6 +113,13 @@ class RpcService:
 
 if __name__ == "__main__":
     import sys
+    from com.goffersoft.logging import logconf
+
+    logconf.init_logging(default_path='../../../../' +
+                         'conf/logconf_rpcservice.json')
+
+    logger = logging.getLogger(__name__)
+
     rpc = RpcService(
         'rpc_exchange',
         ('localhost', )

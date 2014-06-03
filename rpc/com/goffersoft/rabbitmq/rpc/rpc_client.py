@@ -5,11 +5,11 @@ import logging
 import uuid
 from rpc_find import RpcFind
 
-logging.basicConfig()
-
 
 class RpcClient:
-    def __init__(self, exchange, ns_exchange, conn_params, timeout=60):
+    def __init__(self, exchange, ns_exchange,
+                 conn_params, timeout=60, logger=None):
+        self.__logger = logger or logging.getLogger(self.__class__.__name__)
         self.__exchange = exchange
         self.__ns_exchange = ns_exchange
         self.__timedout = False
@@ -61,10 +61,10 @@ class RpcClient:
 
     def __on_timeout(self):
         self.__timedout = True
-        print "timedout waiting for a response "
+        self.__logger.debug('timedout waiting for a response')
 
     def __on_response(self, ch, method, props, body):
-        print "[X] = %r" % self.__message
+        self.__logger.debug('[X] = %r', self.__message)
         if self.__correlation_id == props.correlation_id:
             self.__response = body
 
@@ -91,7 +91,8 @@ class RpcClient:
             self.__method_route = method_route
 
         if self.__method_route is None:
-            print "RpcFind timeout : cannot find route to" + method
+            self.__logger.info('RpcFind timeout : cannot \
+                                find route to ' + method)
             return None
 
         self.__message = self.__create_message(vartargs)
@@ -117,17 +118,23 @@ class RpcClient:
 
 if __name__ == "__main__":
     import sys
+    from com.goffersoft.logging import logconf
+
+    logconf.init_logging(default_path='../../../../\
+                               conf/logconf_rpcclient.json')
+
+    logger = logging.getLogger(__name__)
 
     usage_string = """
     Usage : %s <method [arg [arg]]>
                """
 
     def print_usage_and_exit(reason):
-        print(reason)
+        logger.error(reason)
         sys.exit(usage_string % sys.argv[0])
 
     if len(sys.argv) < 2:
-        print_usage_and_exit("error : Need at least 1 arg")
+        print_usage_and_exit('error : Need at least 1 arg')
 
     method = sys.argv[1]
     list_of_args = sys.argv[2:]
@@ -139,14 +146,14 @@ if __name__ == "__main__":
     ns = RpcFind('rpc_exchange', 'rpc_ns_exchange', ('localhost', ), 15)
     result = ns(method)
     if result is None:
-        print 'Cannot Execute ' + method + '(Not registered)'
+        logger.error('Cannot Execute ' + method + '(Not registered)')
     else:
         result = rpc(method, list_of_args, result)
-        print "%r" % result
+        logger.info('%r', result)
 
     result = rpc(method, list_of_args, None)
 
     if result is None:
-        print 'Cannot Execute ' + method + '(Not registered)'
+        logger.error('Cannot Execute ' + method + '(Not registered)')
     else:
-        print "%r" % result
+        logger.info('%r', result)
