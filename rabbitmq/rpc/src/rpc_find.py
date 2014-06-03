@@ -4,11 +4,6 @@ import pika
 import logging
 import uuid
 
-logging.basicConfig()
-
-logger = logging.getLogger(__name__)
-
-
 class RpcFind:
     def __init__(self, rpc_exchange,
                  rpc_nameservice_exchange,
@@ -111,6 +106,9 @@ class RpcFind:
 
 if __name__ == "__main__":
     import sys
+    from loginit import loginit
+
+    loginit.init_logging(default_path='./logconf_rpcfind.json')
 
     usage_string = """
     Usage : %s <method>

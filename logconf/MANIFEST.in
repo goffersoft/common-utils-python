@@ -1,2 +1,2 @@
 include README.md
-include loginit/conf/*.json
+include conf/*.json

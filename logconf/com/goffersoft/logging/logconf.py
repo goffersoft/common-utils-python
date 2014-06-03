@@ -7,7 +7,7 @@ import logging.config
 
 
 def init_logging(
-    default_path='./conf/logconf_template.json',
+    default_path='../../../conf/logconf_template.json',
     default_level=logging.DEBUG,
     env_key='LOG_CFG'
 ):
@@ -23,16 +23,12 @@ def init_logging(
             cfg = json.load(f)
         logging.config.dictConfig(cfg)
     else:
+        print '**** Log Init Error : Cannot Find Json Log Cfg File : ' + default_path
         logging.basicConfig(level=default_level)
 
 if __name__ == "__main__":
-    from projtemplate import hello
-    from projtemplate import uniqid
     import logging
     import logging.config
-
-    hello.say_hello()
-    print uniqid.get_uniqid()
 
     print logging.__version__
 
