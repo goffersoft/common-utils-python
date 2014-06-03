@@ -17,7 +17,7 @@
         "file_handler": {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "simple",
-            "filename": "sysout_rpcclient.log",
+            "filename": "/tmp/sysout_rpcnameservice.log",
             "maxBytes": "10485760",
             "backupCount": "20",
             "encoding": "utf8"
