@@ -1,12 +1,11 @@
-from unittest import TestCase
-
-from testfixtures import LogCapture
-
 import logging
-
+from unittest import TestCase
+from testfixtures import LogCapture
+from com.goffersoft.logging.logconf import init_logging
 
 class TestLogInit(TestCase):
     def test_log_message(self):
+        init_logging('./conf/logconf_template.json')
         with LogCapture() as l:
             logger = logging.getLogger()
             logger.info('a info message')

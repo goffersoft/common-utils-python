@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='utils',
-    version='0.1',
+    version='0.2',
     description='Logging Configuration',
     long_description=readme(),
     url='http://github/com/common-utils-python/utils',
