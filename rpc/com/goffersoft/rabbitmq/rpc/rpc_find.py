@@ -70,7 +70,8 @@ class RpcFind:
 
     def __on_response(self, ch, method, props, body):
         if self.__correlation_id == props.correlation_id:
-            self.__response = body
+            self.__response = body.decode()
+            self.__logger.debug('[X] = %r', self.__response)
 
     def __call__(self, method, callback=None):
         self.__correlation_id = str(uuid.uuid4())
@@ -92,7 +93,7 @@ class RpcFind:
             exchange=self.__rpc_nameservice_exchange,
             routing_key='',
             properties=properties,
-            body=self.__create_message()
+            body=self.__create_message().encode()
             )
         self.__response = None
         while(self.__response is None and self.__timedout is not True):

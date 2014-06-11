@@ -44,7 +44,7 @@ class RpcService:
     def __on_request(self, ch, method, props, body):
         publish_failure_message = True
         try:
-            args = body.split("\r\n")
+            args = body.decode().split("\r\n")
             self.__logger.debug('%r', args)
             arglist = []
             i = 0
@@ -66,7 +66,7 @@ class RpcService:
 
             if retval is False:
                 message = "Failure:malformed message body :\
-                           \r\n[" + body + ']\r\n'
+                           \r\n[" + body.decode() + ']\r\n'
             else:
                 result = fibo(*arglist)
                 message = self.__create_message('Success', result)
@@ -78,7 +78,7 @@ class RpcService:
                 properties=pika.BasicProperties(
                     correlation_id=props.correlation_id
                     ),
-                body=message
+                body=message.encode()
                 )
         except:
             self.__logger.exception('Unexpected error:')
@@ -92,7 +92,7 @@ class RpcService:
                         properties=pika.BasicProperties(
                             correlation_id=props.correlation_id
                             ),
-                        body=message
+                        body=message.encode()
                         )
                 except:
                     self.__logger.exception('Unexpected error sending \

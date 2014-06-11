@@ -18,8 +18,8 @@
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "simple",
             "filename": "/tmp/sysout_rpcclient.log",
-            "maxBytes": "10485760",
-            "backupCount": "20",
+            "maxBytes": 10485760,
+            "backupCount": 20,
             "encoding": "utf8"
         }
     },

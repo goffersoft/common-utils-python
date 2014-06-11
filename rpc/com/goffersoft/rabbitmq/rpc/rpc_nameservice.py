@@ -38,13 +38,13 @@ class RpcNameService:
 
     def __on_request(self, ch, method, props, body):
         try:
-            args = body.split("\r\n")
+            args = body.decode().split("\r\n")
             self.__logger.debug('%r', args)
             i = 0
             message = None
             if len(args) != 6:
                 self.__logger.error('Failure:malformed message body : \
-                                   \r\n[' + body + ']\r\n')
+                                   \r\n[' + body.decode() + ']\r\n')
             elif args[0] in method_dict and method_dict[args[0]] is not None:
                 message = self.__create_message(args[0])
 
@@ -56,10 +56,10 @@ class RpcNameService:
                     properties=pika.BasicProperties(
                         correlation_id=props.correlation_id
                     ),
-                    body=message
+                    body=message.encode()
                 )
         except:
-            self.__logger.exception('Unexpected error:', sys.exc_info()[0])
+            self.__logger.exception('Unexpected error:')
 
     def __call__(self):
         self.__channel.basic_consume(

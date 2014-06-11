@@ -64,9 +64,9 @@ class RpcClient:
         self.__logger.debug('timedout waiting for a response')
 
     def __on_response(self, ch, method, props, body):
-        self.__logger.debug('[X] = %r', self.__message)
         if self.__correlation_id == props.correlation_id:
-            self.__response = body
+            self.__response = body.decode()
+            self.__logger.debug('[X] = %r', self.__response)
 
     def __create_message(self, vartargs):
         message = self.__method + '\r\n'
@@ -105,16 +105,12 @@ class RpcClient:
             exchange=self.__exchange,
             routing_key=self.__method_route,
             properties=self.__properties,
-            body=self.__message)
+            body=self.__message.encode())
 
         while(self.__response is None and self.__timedout is not True):
             self.__connection.process_data_events()
 
         return self.__response
-
-    def __del__(self):
-        self.__channel.close()
-        self.__connection.close()
 
 if __name__ == "__main__":
     import sys
