@@ -7,11 +7,11 @@ def readme():
 
 
 setup(
-    name='logconf',
+    name='utils',
     version='0.1',
     description='Logging Configuration',
     long_description=readme(),
-    url='http://github/com/common-utils-python/logconf',
+    url='http://github/com/common-utils-python/utils',
     author='goffer',
     author_email='goffersoft@gmail.com',
     license='MIT',
