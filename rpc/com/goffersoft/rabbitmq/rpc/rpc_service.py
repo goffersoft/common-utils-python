@@ -15,7 +15,7 @@ def fibo(x):
     return "Hello World " + str(x)
 
 
-class RpcService:
+class RpcService(object):
     def __init__(self, exchange, conn_params, logger=None):
         self.__logger = logger or logging.getLogger(self.__class__.__name__)
         self.__exchange = exchange

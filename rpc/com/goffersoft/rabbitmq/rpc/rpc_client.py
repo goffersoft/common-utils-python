@@ -6,7 +6,7 @@ import uuid
 from rpc_find import RpcFind
 
 
-class RpcClient:
+class RpcClient(object):
     def __init__(self, exchange, ns_exchange,
                  conn_params, timeout=60, logger=None):
         self.__logger = logger or logging.getLogger(self.__class__.__name__)

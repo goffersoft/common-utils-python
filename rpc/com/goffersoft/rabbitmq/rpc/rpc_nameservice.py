@@ -11,7 +11,7 @@ logging.basicConfig()
 method_dict = {'fibo': 'com.goffersoft.math.algo.fibo'}
 
 
-class RpcNameService:
+class RpcNameService(object):
     def __init__(self, exchange, conn_params, logger=None):
         self.__logger = logger or logging.getLogger(self.__class__.__name__)
         self.__exchange = exchange

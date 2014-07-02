@@ -5,7 +5,7 @@ import logging
 import uuid
 
 
-class RpcFind:
+class RpcFind(object):
     def __init__(self, rpc_exchange,
                  rpc_nameservice_exchange,
                  conn_params, timeout=60, logger=None):
