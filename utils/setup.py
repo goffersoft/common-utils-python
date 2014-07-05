@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='utils',
-    version='0.2',
+    version='0.3',
     description='Logging Configuration',
     long_description=readme(),
     url='http://github/com/common-utils-python/utils',
@@ -19,6 +19,8 @@ setup(
         'com',
         'com.goffersoft',
         'com.goffersoft.logging',
+        'com.goffersoft.sip',
+        'com.goffersoft.http',
     ],
     install_requires=[
     ],
