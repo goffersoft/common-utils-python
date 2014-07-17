@@ -1,5 +1,8 @@
 #! /usr/bin/python
 
+from com.goffersoft.utils.utils import readonly
+import com.goffersoft.utils.uid
+
 
 """ This Module Contains Types for Http Response Codes
     and the corerespnding helper functions
@@ -25,223 +28,219 @@
 """
 
 
-def _readonly(value):
-    return property(lambda self: value)
-
-
 class _HttpRCType(type):
-    """ HTTP Status Codes """
+    """HTTP Status Codes"""
     # 1xx codes
-    RC_100 = _readonly('100')
-    RC_CONTINUE = _readonly('100')
-    RC_101 = _readonly('101')
-    RC_SWITCHING_PROTOCOLS = _readonly('101')
-    RC_102 = _readonly('102')
-    RC_PROCESSING = _readonly('102')
+    RC_100 = readonly('100')
+    RC_CONTINUE = readonly('100')
+    RC_101 = readonly('101')
+    RC_SWITCHING_PROTOCOLS = readonly('101')
+    RC_102 = readonly('102')
+    RC_PROCESSING = readonly('102')
     # 103-199 Unassigned
 
     # 2xx codes
-    RC_200 = _readonly('200')
-    RC_OK = _readonly('200')
-    RC_201 = _readonly('201')
-    RC_CREATED = _readonly('201')
-    RC_202 = _readonly('202')
-    RC_ACCEPTED = _readonly('202')
-    RC_203 = _readonly('203')
-    RC_NON_AUTHORITATIVE_INFORMATION = _readonly('203')
-    RC_204 = _readonly('204')
-    RC_NO_CONTENT = _readonly('204')
-    RC_205 = _readonly('205')
-    RC_RESET_CONTENT = _readonly('205')
-    RC_206 = _readonly('206')
-    RC_PARTIAL_CONTENT = _readonly('206')
-    RC_207 = _readonly('207')
-    RC_MULTI_STATUS = _readonly('207')
-    RC_208 = _readonly('208')
-    RC_ALREADY_REPORTED = _readonly('208')
+    RC_200 = readonly('200')
+    RC_OK = readonly('200')
+    RC_201 = readonly('201')
+    RC_CREATED = readonly('201')
+    RC_202 = readonly('202')
+    RC_ACCEPTED = readonly('202')
+    RC_203 = readonly('203')
+    RC_NON_AUTHORITATIVE_INFORMATION = readonly('203')
+    RC_204 = readonly('204')
+    RC_NO_CONTENT = readonly('204')
+    RC_205 = readonly('205')
+    RC_RESET_CONTENT = readonly('205')
+    RC_206 = readonly('206')
+    RC_PARTIAL_CONTENT = readonly('206')
+    RC_207 = readonly('207')
+    RC_MULTI_STATUS = readonly('207')
+    RC_208 = readonly('208')
+    RC_ALREADY_REPORTED = readonly('208')
     # 209-225 Unassigned
-    RC_226 = _readonly('226')
-    RC_IM_USED = _readonly('226')
+    RC_226 = readonly('226')
+    RC_IM_USED = readonly('226')
     # 227-299 Unassigned
 
     # 3xx codes
-    RC_300 = _readonly('300')
-    RC_MULTIPLE_CHOICES = _readonly('300')
-    RC_301 = _readonly('301')
-    RC_MOVED_PERMANENTLY = _readonly('301')
-    RC_302 = _readonly('302')
-    RC_FOUND = _readonly('302')
-    RC_303 = _readonly('303')
-    RC_SEE_OTHER = _readonly('303')
-    RC_304 = _readonly('304')
-    RC_NOT_MODIFIED = _readonly('304')
-    RC_305 = _readonly('305')
-    RC_USE_PROXY = _readonly('305')
+    RC_300 = readonly('300')
+    RC_MULTIPLE_CHOICES = readonly('300')
+    RC_301 = readonly('301')
+    RC_MOVED_PERMANENTLY = readonly('301')
+    RC_302 = readonly('302')
+    RC_FOUND = readonly('302')
+    RC_303 = readonly('303')
+    RC_SEE_OTHER = readonly('303')
+    RC_304 = readonly('304')
+    RC_NOT_MODIFIED = readonly('304')
+    RC_305 = readonly('305')
+    RC_USE_PROXY = readonly('305')
     # 306 Unassigned
-    RC_307 = _readonly('307')
-    RC_TEMPORARY_REDIRECT = _readonly('307')
-    RC_308 = _readonly('308')
-    RC_PERMANENT_REDIRECT = _readonly('308')
+    RC_307 = readonly('307')
+    RC_TEMPORARY_REDIRECT = readonly('307')
+    RC_308 = readonly('308')
+    RC_PERMANENT_REDIRECT = readonly('308')
     # 309-399 Unassigned
 
     # 4xx codes
-    RC_400 = _readonly('400')
-    RC_BAD_REQUEST = _readonly('400')
-    RC_401 = _readonly('401')
-    RC_UNAUTHORIZED = _readonly('401')
-    RC_402 = _readonly('402')
-    RC_PAYMENT_REQUIRED = _readonly('402')
-    RC_403 = _readonly('403')
-    RC_FORBIDDEN = _readonly('403')
-    RC_404 = _readonly('404')
-    RC_NOT_FOUND = _readonly('404')
-    RC_405 = _readonly('405')
-    RC_METHOD_NOT_ALLOWED = _readonly('405')
-    RC_406 = _readonly('406')
-    RC_NOT_ACCEPTABLE = _readonly('406')
-    RC_407 = _readonly('407')
-    RC_PROXY_AUTHENTICATION_REQUIRED = _readonly('407')
-    RC_408 = _readonly('408')
-    RC_REQUEST_TIMEOUT = _readonly('408')
-    RC_409 = _readonly('409')
-    RC_CONFLICT = _readonly('409')
-    RC_410 = _readonly('410')
-    RC_GONE = _readonly('410')
-    RC_411 = _readonly('411')
-    RC_LENGTH_REQUIRED = _readonly('411')
-    RC_412 = _readonly('412')
-    RC_PRECONDITION_FAILED = _readonly('412')
-    RC_413 = _readonly('413')
-    RC_PAYLOAD_TOO_LARGE = _readonly('413')
-    RC_414 = _readonly('414')
-    RC_URI_TOO_LONG = _readonly('414')
-    RC_415 = _readonly('415')
-    RC_UNSUPPORTED_MEDIA_TYPE = _readonly('415')
-    RC_416 = _readonly('416')
-    RC_REQUESTED_RANGE_NOT_SATISFIABLE = _readonly('416')
-    RC_417 = _readonly('417')
-    RC_EXPECTATION_FAILED = _readonly('417')
+    RC_400 = readonly('400')
+    RC_BAD_REQUEST = readonly('400')
+    RC_401 = readonly('401')
+    RC_UNAUTHORIZED = readonly('401')
+    RC_402 = readonly('402')
+    RC_PAYMENT_REQUIRED = readonly('402')
+    RC_403 = readonly('403')
+    RC_FORBIDDEN = readonly('403')
+    RC_404 = readonly('404')
+    RC_NOT_FOUND = readonly('404')
+    RC_405 = readonly('405')
+    RC_METHOD_NOT_ALLOWED = readonly('405')
+    RC_406 = readonly('406')
+    RC_NOT_ACCEPTABLE = readonly('406')
+    RC_407 = readonly('407')
+    RC_PROXY_AUTHENTICATION_REQUIRED = readonly('407')
+    RC_408 = readonly('408')
+    RC_REQUEST_TIMEOUT = readonly('408')
+    RC_409 = readonly('409')
+    RC_CONFLICT = readonly('409')
+    RC_410 = readonly('410')
+    RC_GONE = readonly('410')
+    RC_411 = readonly('411')
+    RC_LENGTH_REQUIRED = readonly('411')
+    RC_412 = readonly('412')
+    RC_PRECONDITION_FAILED = readonly('412')
+    RC_413 = readonly('413')
+    RC_PAYLOAD_TOO_LARGE = readonly('413')
+    RC_414 = readonly('414')
+    RC_URI_TOO_LONG = readonly('414')
+    RC_415 = readonly('415')
+    RC_UNSUPPORTED_MEDIA_TYPE = readonly('415')
+    RC_416 = readonly('416')
+    RC_REQUESTED_RANGE_NOT_SATISFIABLE = readonly('416')
+    RC_417 = readonly('417')
+    RC_EXPECTATION_FAILED = readonly('417')
     # 418-421 Unassigned
-    RC_422 = _readonly('422')
-    RC_UNPROCESSABLE_ENTITY = _readonly('422')
-    RC_423 = _readonly('423')
-    RC_LOCKED = _readonly('423')
-    RC_424 = _readonly('424')
-    RC_FAILED_DEPENDENCY = _readonly('424')
+    RC_422 = readonly('422')
+    RC_UNPROCESSABLE_ENTITY = readonly('422')
+    RC_423 = readonly('423')
+    RC_LOCKED = readonly('423')
+    RC_424 = readonly('424')
+    RC_FAILED_DEPENDENCY = readonly('424')
     # 425 Unassigned
-    RC_426 = _readonly('426')
-    RC_UGRADE_REQUIRED = _readonly('426')
+    RC_426 = readonly('426')
+    RC_UGRADE_REQUIRED = readonly('426')
     # 427 Unassigned
-    RC_428 = _readonly('428')
-    RC_PRECONDITION_REQUIRED = _readonly('428')
-    RC_429 = _readonly('429')
-    RC_TOO_MANY_REQUESTS = _readonly('429')
+    RC_428 = readonly('428')
+    RC_PRECONDITION_REQUIRED = readonly('428')
+    RC_429 = readonly('429')
+    RC_TOO_MANY_REQUESTS = readonly('429')
     # 430 Unassigned
-    RC_431 = _readonly('431')
-    RC_REQUEST_HEADER_FIELDS_TOO_LARGE = _readonly('431')
+    RC_431 = readonly('431')
+    RC_REQUEST_HEADER_FIELDS_TOO_LARGE = readonly('431')
     # 432-499 Unassigned
 
     # 5xx codes
-    RC_500 = _readonly('500')
-    RC_INTERNAL_SERVER_ERROR = _readonly('500')
-    RC_501 = _readonly('501')
-    RC_NOT_IMPLEMENTED = _readonly('501')
-    RC_502 = _readonly('502')
-    RC_BAD_GATEWAY = _readonly('502')
-    RC_503 = _readonly('503')
-    RC_SERVICE_UNAVAILABLE = _readonly('503')
-    RC_504 = _readonly('504')
-    RC_GATEWAY_TIMEOUT = _readonly('504')
-    RC_505 = _readonly('505')
-    RC_HTTP_VERSION_NOT_SUPPORTED = _readonly('505')
-    RC_506 = _readonly('506')
-    RC_VARIANT_ALSO_NEGOTIATES = _readonly('506')
-    RC_507 = _readonly('507')
-    RC_INSUFFICIENT_STORAGE = _readonly('507')
-    RC_508 = _readonly('508')
-    RC_LOOP_DETCTED = _readonly('508')
+    RC_500 = readonly('500')
+    RC_INTERNAL_SERVER_ERROR = readonly('500')
+    RC_501 = readonly('501')
+    RC_NOT_IMPLEMENTED = readonly('501')
+    RC_502 = readonly('502')
+    RC_BAD_GATEWAY = readonly('502')
+    RC_503 = readonly('503')
+    RC_SERVICE_UNAVAILABLE = readonly('503')
+    RC_504 = readonly('504')
+    RC_GATEWAY_TIMEOUT = readonly('504')
+    RC_505 = readonly('505')
+    RC_HTTP_VERSION_NOT_SUPPORTED = readonly('505')
+    RC_506 = readonly('506')
+    RC_VARIANT_ALSO_NEGOTIATES = readonly('506')
+    RC_507 = readonly('507')
+    RC_INSUFFICIENT_STORAGE = readonly('507')
+    RC_508 = readonly('508')
+    RC_LOOP_DETCTED = readonly('508')
     # 509 Unassigned
-    RC_510 = _readonly('510')
-    RC_NOT_EXTENDED = _readonly('510')
-    RC_511 = _readonly('511')
-    RC_NETWORK_AUTHENTICATION_FAILED = _readonly('511')
+    RC_510 = readonly('510')
+    RC_NOT_EXTENDED = readonly('510')
+    RC_511 = readonly('511')
+    RC_NETWORK_AUTHENTICATION_FAILED = readonly('511')
     # 512-599 Unassigned
 
 
 class _HttpRCDescrType(type):
-    """ HTTP Status Codes - Descriptive Text """
+    """HTTP Status Codes - Descriptive Text"""
     # 1xx codes
-    RC_100 = _readonly('Continue')
-    RC_101 = _readonly('Switching Protocols')
-    RC_102 = _readonly('Processing')
+    RC_100 = readonly('Continue')
+    RC_101 = readonly('Switching Protocols')
+    RC_102 = readonly('Processing')
     # 103-199 Unassigned
 
     # 2xx codes
-    RC_200 = _readonly('OK')
-    RC_201 = _readonly('Created')
-    RC_202 = _readonly('Accepted')
-    RC_203 = _readonly('Non-Authoritative Information')
-    RC_204 = _readonly('No Content')
-    RC_205 = _readonly('Reset Content')
-    RC_206 = _readonly('Partial Content')
-    RC_207 = _readonly('Multi-Status')
-    RC_208 = _readonly('Already Supported')
+    RC_200 = readonly('OK')
+    RC_201 = readonly('Created')
+    RC_202 = readonly('Accepted')
+    RC_203 = readonly('Non-Authoritative Information')
+    RC_204 = readonly('No Content')
+    RC_205 = readonly('Reset Content')
+    RC_206 = readonly('Partial Content')
+    RC_207 = readonly('Multi-Status')
+    RC_208 = readonly('Already Supported')
     # 209-225 Unassigned
-    RC_226 = _readonly('IM Used')
+    RC_226 = readonly('IM Used')
     # 227-299 Unassigned
 
     # 3xx codes
-    RC_300 = _readonly('Mutliple Choices')
-    RC_301 = _readonly('Moved Permanently')
-    RC_302 = _readonly('Found')
-    RC_303 = _readonly('See Other')
-    RC_304 = _readonly('Not Modified')
-    RC_305 = _readonly('Use Proxy')
-    RC_307 = _readonly('Temporary Redirect')
-    RC_308 = _readonly('Permanent Redirect')
+    RC_300 = readonly('Mutliple Choices')
+    RC_301 = readonly('Moved Permanently')
+    RC_302 = readonly('Found')
+    RC_303 = readonly('See Other')
+    RC_304 = readonly('Not Modified')
+    RC_305 = readonly('Use Proxy')
+    RC_307 = readonly('Temporary Redirect')
+    RC_308 = readonly('Permanent Redirect')
     # 309-399 Unassigned
 
     # 4xx codes
-    RC_400 = _readonly('Bad Request')
-    RC_401 = _readonly('Unauthorized')
-    RC_402 = _readonly('Payment Required')
-    RC_403 = _readonly('Forbidden')
-    RC_404 = _readonly('Not Found')
-    RC_405 = _readonly('Method Not Allowed')
-    RC_406 = _readonly('Not Acceptable')
-    RC_407 = _readonly('Proxy Authentication Required')
-    RC_408 = _readonly('Request Timeout')
-    RC_409 = _readonly('Conflict')
-    RC_410 = _readonly('Gone')
-    RC_411 = _readonly('Length Required')
-    RC_412 = _readonly('Precondition Failed')
-    RC_413 = _readonly('Payload Too Large')
-    RC_414 = _readonly('URI Too Long')
-    RC_415 = _readonly('Unsupported Media Type')
-    RC_416 = _readonly('Requested Range Not Satisfiable')
-    RC_417 = _readonly('Expectation Failed')
+    RC_400 = readonly('Bad Request')
+    RC_401 = readonly('Unauthorized')
+    RC_402 = readonly('Payment Required')
+    RC_403 = readonly('Forbidden')
+    RC_404 = readonly('Not Found')
+    RC_405 = readonly('Method Not Allowed')
+    RC_406 = readonly('Not Acceptable')
+    RC_407 = readonly('Proxy Authentication Required')
+    RC_408 = readonly('Request Timeout')
+    RC_409 = readonly('Conflict')
+    RC_410 = readonly('Gone')
+    RC_411 = readonly('Length Required')
+    RC_412 = readonly('Precondition Failed')
+    RC_413 = readonly('Payload Too Large')
+    RC_414 = readonly('URI Too Long')
+    RC_415 = readonly('Unsupported Media Type')
+    RC_416 = readonly('Requested Range Not Satisfiable')
+    RC_417 = readonly('Expectation Failed')
     # 418-421 Unassigned
-    RC_422 = _readonly('Unprocessable Entity')
-    RC_423 = _readonly('Locked')
-    RC_424 = _readonly('Failed Dependency')
-    RC_426 = _readonly('Upgrade Required')
-    RC_428 = _readonly('Precondition Failed')
-    RC_429 = _readonly('Too Many Requests')
-    RC_431 = _readonly('Request Header Fields Too Large')
+    RC_422 = readonly('Unprocessable Entity')
+    RC_423 = readonly('Locked')
+    RC_424 = readonly('Failed Dependency')
+    RC_426 = readonly('Upgrade Required')
+    RC_428 = readonly('Precondition Failed')
+    RC_429 = readonly('Too Many Requests')
+    RC_431 = readonly('Request Header Fields Too Large')
     # 432-499 Unassigned
 
     # 5xx codes
-    RC_500 = _readonly('Internal Server Error')
-    RC_501 = _readonly('Not Implemented')
-    RC_502 = _readonly('Bad Gateway')
-    RC_503 = _readonly('Service Unavailable')
-    RC_504 = _readonly('Gateway Timeout')
-    RC_505 = _readonly('HTTP Version Not Supported')
-    RC_506 = _readonly('Variant Also Negotiates (Experimental)')
-    RC_507 = _readonly('Insufficient Storage')
-    RC_508 = _readonly('Loop Detected')
-    RC_510 = _readonly('Not Extended')
-    RC_511 = _readonly('Network Authentication Failed')
+    RC_500 = readonly('Internal Server Error')
+    RC_501 = readonly('Not Implemented')
+    RC_502 = readonly('Bad Gateway')
+    RC_503 = readonly('Service Unavailable')
+    RC_504 = readonly('Gateway Timeout')
+    RC_505 = readonly('HTTP Version Not Supported')
+    RC_506 = readonly('Variant Also Negotiates (Experimental)')
+    RC_507 = readonly('Insufficient Storage')
+    RC_508 = readonly('Loop Detected')
+    RC_510 = readonly('Not Extended')
+    RC_511 = readonly('Network Authentication Failed')
     # 512-599 Unassigned
 
 
@@ -323,65 +322,56 @@ codetype_deprecated = ()
 
 
 def is_1xx(code):
-    """ Determines if the given code is a 1xx code or not"""
-
+    """Determines if the given code is a 1xx code or not"""
     if code in codetype_1xx:
         return True
     return False
 
 
 def is_2xx(code):
-    """ Determines if the given code is a 2xx code or not"""
-
+    """Determines if the given code is a 2xx code or not"""
     if code in codetype_2xx:
         return True
     return False
 
 
 def is_3xx(code):
-    """ Determines if the given code is a 3xx code or not"""
-
+    """Determines if the given code is a 3xx code or not"""
     if code in codetype_3xx:
         return True
     return False
 
 
 def is_4xx(code):
-    """ Determines if the given code is a 4xx code or not"""
-
+    """Determines if the given code is a 4xx code or not"""
     if code in codetype_4xx:
         return True
     return False
-    pass
 
 
 def is_5xx(code):
-    """ Determines if the given code is a 5xx code or not"""
-
+    """Determines if the given code is a 5xx code or not"""
     if code in codetype_5xx:
         return True
     return False
 
 
 def is_experimental(code):
-    """ Determines if the given code is a experimental code or not"""
-
+    """Determines if the given code is a experimental code or not"""
     if code in codetype_experimental:
         return True
     return False
 
 
 def is_deprecated(code):
-    """ Determines if the given code is a deprecated code or not"""
-
+    """Determines if the given code is a deprecated code or not"""
     if code in codetype_deprecated:
         return True
     return False
 
 
 def is_valid(code):
-    """ Determines if the given code is a [1-5]xx code or not"""
-
+    """Determines if the given code is a [1-5]xx code or not"""
     if(code in codetype_1xx or
        code in codetype_2xx or
        code in codetype_3xx or
@@ -392,44 +382,37 @@ def is_valid(code):
 
 
 def get_1xx_codes():
-    """ returns a list (tuple) of 1xx codes """
-
+    """returns a list (tuple) of 1xx codes"""
     return codetype_1xx
 
 
 def get_2xx_codes():
-    """ returns a list (tuple) of 2xx codes """
-
+    """returns a list (tuple) of 2xx codes"""
     return codetype_2xx
 
 
 def get_3xx_codes():
-    """ returns a list (tuple) of 3xx codes """
-
+    """returns a list (tuple) of 3xx codes"""
     return codetype_3xx
 
 
 def get_4xx_codes():
-    """ returns a list (tuple) of 4xx codes """
-
+    """returns a list (tuple) of 4xx codes"""
     return codetype_4xx
 
 
 def get_5xx_codes():
-    """ returns a list (tuple) of 5xx codes """
-
+    """returns a list (tuple) of 5xx codes"""
     return codetype_5xx
 
 
 def get_experimental_codes():
-    """ returns a list (tuple) of experimental codes """
-
+    """returns a list (tuple) of experimental codes"""
     return codetype_experimental
 
 
 def get_deprecated_codes():
-    """ returns a list (tuple) of deprecated codes """
-
+    """returns a list (tuple) of deprecated codes"""
     return codetype_deprecated
 
 
