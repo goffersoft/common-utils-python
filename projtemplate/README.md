@@ -1,7 +1,7 @@
 Project Template
 --------
 
-To use (with caution), simply do::
+To use simply do::
 
     >>> from projtemplate import hello
     >>> print hello.say_hello()
