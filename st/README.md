@@ -36,13 +36,19 @@ install :
 1) cd python_utils
 
 2) install utils module
+
     a) pushd utils
+    
     b) sudo python setup.py install
+
     c) popd
 
 3) install the msg module
+
     a) pushd msg
+
     b) sudo python setup.py install
+
     c) popd
 
 
@@ -52,8 +58,11 @@ run :
 
 2) execute the following commands each cammnd
    should be executed in separate terminal windows
+
     a) python stmain.py stmgr
+
     b) python stmain.py stsvc
+
     c) python stmain.py stui
 
 3) log files by default are located in /tmp
