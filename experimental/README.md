@@ -1,4 +1,4 @@
-utils is a collection of python code 
+collection of python code - experimental
 
 
 RPC Services - Using Rabbit - MQ

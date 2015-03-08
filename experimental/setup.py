@@ -7,11 +7,11 @@ def readme():
 
 
 setup(
-    name='utils',
+    name='experimental',
     version='0.4',
     description='Logging Configuration',
     long_description=readme(),
-    url='http://github/com/common-utils-python/utils',
+    url='http://github/com/common-utils-python/experimental',
     author='goffer',
     author_email='goffersoft@gmail.com',
     license='MIT',
